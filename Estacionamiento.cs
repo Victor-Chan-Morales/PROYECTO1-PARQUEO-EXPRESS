@@ -272,6 +272,16 @@ namespace PROYECTO1_PARQUEO_EXPRESS
                 return true;
             }
         }
-
+        public bool CorrobararEspacios()
+        {
+            if (EspaciosDisponibles>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

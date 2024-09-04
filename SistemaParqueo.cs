@@ -18,154 +18,163 @@ namespace PROYECTO1_PARQUEO_EXPRESS
         // Método para registrar Vehículo
         public void RegistrarVehículo()
         {
-            try
+           if (parkingExpress.CorrobararEspacios())
             {
-                int tipoVehiculo;
-                do
+                try
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine("Seleccione el típo de vehículo que desea agregar:\n1. Auto\n2. Moto\n3. Camión");
-                    tipoVehiculo=int.Parse(Console.ReadLine());
-                    if (tipoVehiculo==1||tipoVehiculo==2 || tipoVehiculo==3)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.ForegroundColor= ConsoleColor.DarkRed;
-                        Console.WriteLine("No disponible...");Console.ResetColor();
-                    }
-                } while (true);
-                Console.ResetColor();
-                Console.Write("Ingrese la placa del vehículo: ");
-                string placaV = Console.ReadLine().ToUpper();
-                if (parkingExpress.VerificarExistencia(placaV))
-                {
-                    Console.Write("Ingrese el color del vehículo: ");
-                    string colorV = Console.ReadLine().ToUpper();
-                    Console.Write("Ingrese la marca del vehículo: ");
-                    string marcaV = Console.ReadLine().ToUpper();
-                    int anioV;
+                    int tipoVehiculo;
                     do
                     {
-                        Console.Write("Ingrese el año del vehículo: ");
-                        anioV = int.Parse(Console.ReadLine());
-                        if (anioV > 1900 && anioV < 2026)
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine("Seleccione el típo de vehículo que desea agregar:\n1. Auto\n2. Moto\n3. Camión");
+                        tipoVehiculo = int.Parse(Console.ReadLine());
+                        if (tipoVehiculo == 1 || tipoVehiculo == 2 || tipoVehiculo == 3)
                         {
                             break;
                         }
                         else
                         {
-                            Console.ForegroundColor=ConsoleColor.DarkRed;
-                            Console.WriteLine("Error: El año debe estar en el rango de 1900 a 2025"); Console.ResetColor();
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.WriteLine("No disponible..."); Console.ResetColor();
                         }
                     } while (true);
-                    DateTime horaEntradaV = DateTime.Now;
-                    switch (tipoVehiculo)
+                    Console.ResetColor();
+                    Console.Write("Ingrese la placa del vehículo: ");
+                    string placaV = Console.ReadLine().ToUpper();
+                    if (parkingExpress.VerificarExistencia(placaV))
                     {
-                        case 1:
-                            Console.Write("Ingrese el número de puertas: ");
-                            int numeroPuertasV=int.Parse(Console.ReadLine());
-                            Vehiculo nuevoAuto=new Auto(placaV, colorV,marcaV, anioV, horaEntradaV, "AUTO", numeroPuertasV);
-                            if (ConfirmarOperacion(nuevoAuto))
+                        Console.Write("Ingrese el color del vehículo: ");
+                        string colorV = Console.ReadLine().ToUpper();
+                        Console.Write("Ingrese la marca del vehículo: ");
+                        string marcaV = Console.ReadLine().ToUpper();
+                        int anioV;
+                        do
+                        {
+                            Console.Write("Ingrese el año del vehículo: ");
+                            anioV = int.Parse(Console.ReadLine());
+                            if (anioV > 1900 && anioV < 2026)
                             {
-                                parkingExpress.AgregarVehiculoALista(nuevoAuto);
+                                break;
                             }
                             else
                             {
-                                Console.WriteLine("Cancelando operación...");
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                Console.WriteLine("Error: El año debe estar en el rango de 1900 a 2025"); Console.ResetColor();
                             }
-                            break;
-                        case 2:
-                            bool verificarSideCar = false;
-                            while (true)
-                            {
-                                Console.WriteLine("¿Cuenta con SideCar? S/N");
-                                string sideCar = Console.ReadLine().ToLower();
-
-                                if (sideCar == "s")
+                        } while (true);
+                        DateTime horaEntradaV = DateTime.Now;
+                        switch (tipoVehiculo)
+                        {
+                            case 1:
+                                Console.Write("Ingrese el número de puertas: ");
+                                int numeroPuertasV = int.Parse(Console.ReadLine());
+                                Vehiculo nuevoAuto = new Auto(placaV, colorV, marcaV, anioV, horaEntradaV, "AUTO", numeroPuertasV);
+                                if (ConfirmarOperacion(nuevoAuto))
                                 {
-                                    verificarSideCar = true;
-                                    break;
-                                }
-                                else if (sideCar == "N")
-                                {
-                                    verificarSideCar = false;
-                                    break;
+                                    parkingExpress.AgregarVehiculoALista(nuevoAuto);
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Debe ingresar S o N");
+                                    Console.WriteLine("Cancelando operación...");
                                 }
-                            }
-                            Vehiculo nuevaMoto = new Moto(placaV, colorV, marcaV, anioV, horaEntradaV, "MOTOCICLETA", verificarSideCar);
-                            if (ConfirmarOperacion(nuevaMoto))
-                            {
-                                parkingExpress.AgregarVehiculoALista(nuevaMoto);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Cancelando operación...");
-                            }
-                            break;
-                        case 3:
-                            string tipoCamion = "";
-                            bool menu3 = true;
-                            while (menu3)
-                            {
-                                Console.WriteLine("Seleccione el tipo de camión: 1. camión de carga, 2. camión de remolque, 3. Tanque, 4. Plataforma");
-                                int opcionCamion = int.Parse(Console.ReadLine());
-
-                                switch (opcionCamion)
+                                break;
+                            case 2:
+                                bool verificarSideCar = false;
+                                while (true)
                                 {
-                                    case 1:
-                                        tipoCamion = "CARGA";
-                                        menu3 = false;
+                                    Console.WriteLine("¿Cuenta con SideCar? S/N");
+                                    string sideCar = Console.ReadLine().ToLower();
+
+                                    if (sideCar == "s")
+                                    {
+                                        verificarSideCar = true;
                                         break;
-                                    case 2:
-                                        tipoCamion = "REMOLQUE";
-                                        menu3 = false;
+                                    }
+                                    else if (sideCar == "N")
+                                    {
+                                        verificarSideCar = false;
                                         break;
-                                    case 3:
-                                        tipoCamion = "TANQUE";
-                                        menu3 = false;
-                                        break;
-                                    case 4:
-                                        tipoCamion = "PLATAFORMA";
-                                        menu3 = false;
-                                        break;
-                                    default:
-                                        Console.WriteLine("Opción no válida... seleccione del 1 al 4");
-                                        menu3 = true;
-                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Debe ingresar S o N");
+                                    }
                                 }
-                            }
-                            Vehiculo nuevoCamion=new Camion(placaV, colorV, marcaV, anioV, horaEntradaV, "CAMIÓN", tipoCamion);
-                            if (ConfirmarOperacion(nuevoCamion))
-                            {
-                                parkingExpress.AgregarVehiculoALista(nuevoCamion);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Cancelando operación...");
-                            }
-                            break;
-                        default:
-                            Console.ForegroundColor= ConsoleColor.DarkRed;
-                            Console.WriteLine("¡¡Esta opción no está disponible!!");Console.ResetColor();
-                            break;
+                                Vehiculo nuevaMoto = new Moto(placaV, colorV, marcaV, anioV, horaEntradaV, "MOTOCICLETA", verificarSideCar);
+                                if (ConfirmarOperacion(nuevaMoto))
+                                {
+                                    parkingExpress.AgregarVehiculoALista(nuevaMoto);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Cancelando operación...");
+                                }
+                                break;
+                            case 3:
+                                string tipoCamion = "";
+                                bool menu3 = true;
+                                while (menu3)
+                                {
+                                    Console.WriteLine("Seleccione el tipo de camión: 1. camión de carga, 2. camión de remolque, 3. Tanque, 4. Plataforma");
+                                    int opcionCamion = int.Parse(Console.ReadLine());
+
+                                    switch (opcionCamion)
+                                    {
+                                        case 1:
+                                            tipoCamion = "CARGA";
+                                            menu3 = false;
+                                            break;
+                                        case 2:
+                                            tipoCamion = "REMOLQUE";
+                                            menu3 = false;
+                                            break;
+                                        case 3:
+                                            tipoCamion = "TANQUE";
+                                            menu3 = false;
+                                            break;
+                                        case 4:
+                                            tipoCamion = "PLATAFORMA";
+                                            menu3 = false;
+                                            break;
+                                        default:
+                                            Console.WriteLine("Opción no válida... seleccione del 1 al 4");
+                                            menu3 = true;
+                                            break;
+                                    }
+                                }
+                                Vehiculo nuevoCamion = new Camion(placaV, colorV, marcaV, anioV, horaEntradaV, "CAMIÓN", tipoCamion);
+                                if (ConfirmarOperacion(nuevoCamion))
+                                {
+                                    parkingExpress.AgregarVehiculoALista(nuevoCamion);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Cancelando operación...");
+                                }
+                                break;
+                            default:
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                Console.WriteLine("¡¡Esta opción no está disponible!!"); Console.ResetColor();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Estas placas ya están registradas...");
                     }
                 }
-                else
+                catch (FormatException)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("Estas placas ya están registradas...");
+                    Console.WriteLine("¡¡ Error: ha ingresado un caracter inválido, intente de nuevo..."); Console.ResetColor();
                 }
             }
-            catch (FormatException)
+           else
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("¡¡ Error: ha ingresado un caracter inválido, intente de nuevo..."); Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("¡¡No hay espacios disponibles en este momento!!");
+                Console.ResetColor();
             }
         }
 
