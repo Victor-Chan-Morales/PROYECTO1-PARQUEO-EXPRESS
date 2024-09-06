@@ -22,11 +22,22 @@ while (true)
         Console.WriteLine("║  PARKING EXPRESS  ║");
         Console.WriteLine("=====================\n"); Console.ResetColor();
         Console.ForegroundColor = ConsoleColor.DarkYellow;
-        Console.Clear();
-        Console.WriteLine("Bienvenido al sistema de PARKING EXPRESS"); Console.ResetColor();
+        Console.WriteLine("\nBienvenido al sistema de PARKING EXPRESS"); Console.ResetColor();
         Console.Write("Espacios disponibles para hoy: ");
         espacios=int.Parse(Console.ReadLine());
-        break;
+        if (espacios>0)
+        {
+            SistemaParqueo parkingExpress = new SistemaParqueo(espacios);
+            parkingExpress.MostrarMenu();
+            break;
+        }
+        else
+        {
+            Console.ForegroundColor= ConsoleColor.DarkRed;
+            Console.WriteLine("Error: debe ingresar una cantidad mayor a cero..."); Console.ReadKey();
+            Console.ResetColor();
+        }
+        
     }
     catch (FormatException)
     {
@@ -36,5 +47,3 @@ while (true)
     }
 }
 
-SistemaParqueo parkingExpress=new SistemaParqueo(espacios);
-parkingExpress.MostrarMenu();

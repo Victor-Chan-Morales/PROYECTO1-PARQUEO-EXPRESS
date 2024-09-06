@@ -41,25 +41,45 @@ namespace PROYECTO1_PARQUEO_EXPRESS
                     Console.ResetColor();
                     Console.Write("Ingrese la placa del vehículo: ");
                     string placaV = Console.ReadLine().ToUpper();
-                    if (parkingExpress.VerificarExistencia(placaV))
+                    if (parkingExpress.VerificarExistencia(placaV)&& placaV!="")
                     {
-                        Console.Write("Ingrese el color del vehículo: ");
-                        string colorV = Console.ReadLine().ToUpper();
-                        Console.Write("Ingrese la marca del vehículo: ");
-                        string marcaV = Console.ReadLine().ToUpper();
+                        string colorV="";
+                        do
+                        {
+                            Console.Write("Ingrese el color del vehículo: ");
+                            colorV = Console.ReadLine().ToUpper();
+                            if (colorV=="")
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                Console.WriteLine("Error: debe ingresar un color válido...");
+                                Console.ResetColor();
+                            }
+                        } while (colorV == "");
+                        string marcaV = "";
+                        do
+                        {
+                            Console.Write("Ingrese la marca del vehículo: ");
+                            marcaV = Console.ReadLine().ToUpper();
+                            if (marcaV == "")
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                Console.WriteLine("Error: debe ingresar un color válido...");
+                                Console.ResetColor();
+                            }
+                        } while (marcaV == "");
                         int anioV;
                         do
                         {
                             Console.Write("Ingrese el año del vehículo: ");
                             anioV = int.Parse(Console.ReadLine());
-                            if (anioV > 1900 && anioV < 2026)
+                            if (anioV > 1950 && anioV < 2025)
                             {
                                 break;
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                                Console.WriteLine("Error: El año debe estar en el rango de 1900 a 2025"); Console.ResetColor();
+                                Console.WriteLine("Error: El año debe estar en el rango de 1950 a 2025"); Console.ResetColor();
                             }
                         } while (true);
                         DateTime horaEntradaV = DateTime.Now;
@@ -68,15 +88,26 @@ namespace PROYECTO1_PARQUEO_EXPRESS
                             case 1:
                                 Console.Write("Ingrese el número de puertas: ");
                                 int numeroPuertasV = int.Parse(Console.ReadLine());
-                                Vehiculo nuevoAuto = new Auto(placaV, colorV, marcaV, anioV, horaEntradaV, "AUTO", numeroPuertasV);
-                                if (ConfirmarOperacion(nuevoAuto))
+                                do
                                 {
-                                    parkingExpress.AgregarVehiculoALista(nuevoAuto);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Cancelando operación...");
-                                }
+                                    if (numeroPuertasV > 0)
+                                    {
+                                        Vehiculo nuevoAuto = new Auto(placaV, colorV, marcaV, anioV, horaEntradaV, "AUTO", numeroPuertasV);
+                                        if (ConfirmarOperacion(nuevoAuto))
+                                        {
+                                            parkingExpress.AgregarVehiculoALista(nuevoAuto);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Cancelando operación...");
+                                        }
+                                    }
+                                    else if (numeroPuertasV<=0 || numeroPuertasV==null)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                                        Console.WriteLine("Error: debe ingresar un número de puertas válido.");
+                                    }
+                                } while (numeroPuertasV > 0);
                                 break;
                             case 2:
                                 bool verificarSideCar = false;
@@ -90,7 +121,7 @@ namespace PROYECTO1_PARQUEO_EXPRESS
                                         verificarSideCar = true;
                                         break;
                                     }
-                                    else if (sideCar == "N")
+                                    else if (sideCar == "n")
                                     {
                                         verificarSideCar = false;
                                         break;
@@ -158,6 +189,12 @@ namespace PROYECTO1_PARQUEO_EXPRESS
                                 break;
                         }
                     }
+                    else if (placaV=="")
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Error: debe ingresar un número de placa válido");
+                        Console.ResetColor();
+                    }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -197,6 +234,7 @@ namespace PROYECTO1_PARQUEO_EXPRESS
         // Método para Confirmar agregar/eliminar vehículo
         public bool ConfirmarOperacion(Vehiculo vehiculo)
         {
+            Console.Clear();
             Console.ForegroundColor= ConsoleColor.DarkRed;
             Console.WriteLine("\nCONFIRME LOS DATOS DEL VEHÍCULO ANTES DE CONTINUAR: "); Console.ResetColor();
             vehiculo.MostrarInfo();
@@ -231,7 +269,6 @@ namespace PROYECTO1_PARQUEO_EXPRESS
                     Console.WriteLine("=====================");
                     Console.WriteLine("║  PARKING EXPRESS  ║");
                     Console.WriteLine("=====================\n"); Console.ResetColor();
-
                     Console.WriteLine("    1. Registrar Vehículo");
                     Console.WriteLine("    2. Retirar Vehículo");
                     Console.WriteLine("    3. Ver Vehículos Estacionados");

@@ -46,8 +46,11 @@ namespace PROYECTO1_PARQUEO_EXPRESS
             Console.WriteLine("=====================");
             Console.WriteLine("║  PARKING EXPRESS  ║");
             Console.WriteLine("=====================\n");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("    → ESPACIOS DISPONIBLES: " + EspaciosDisponibles);
+            int espaciosOcupados=listaVehiculos.Count;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("    → ESPACIOS OCUPADOS: "+espaciosOcupados);
             Console.ResetColor();
         }
 
